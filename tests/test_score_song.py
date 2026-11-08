@@ -236,3 +236,63 @@ def test_song_with_a_missing_field_raises_value_error(field):
 def test_song_with_a_blank_field_raises_value_error(blank):
     with pytest.raises(ValueError, match="mood"):
         score_song(FULL_PREFS, make_song(mood=blank))
+
+
+# --- Edge-case profiles: unusual combinations that try to trick the scoring ---
+
+SAD_BANGER = make_song(title="Sad Banger", mood="sad", energy=0.9)
+SAD_LULLABY = make_song(title="Sad Lullaby", mood="sad", energy=0.2)
+HAPPY_BANGER = make_song(title="Happy Banger", mood="happy", energy=0.9)
+
+
+def test_edge_profile_high_energy_but_sad_prefers_the_song_that_satisfies_both():
+    prefs = {"target_energy": 0.9, "favorite_mood": "sad"}
+
+    banger = score_song(prefs, SAD_BANGER)[0]
+
+    assert banger > score_song(prefs, SAD_LULLABY)[0]
+    assert banger > score_song(prefs, HAPPY_BANGER)[0]
+
+
+def test_edge_profile_high_energy_but_sad_lets_energy_outvote_mood():
+    # Contradictory taste: the 2.0 energy weight beats the 1.0 mood weight,
+    # so a happy banger outranks a sad lullaby. Documents the trade-off.
+    prefs = {"target_energy": 0.9, "favorite_mood": "sad"}
+
+    assert score_song(prefs, HAPPY_BANGER)[0] > score_song(prefs, SAD_LULLABY)[0]
+
+
+def test_edge_profile_impossible_targets_cannot_push_the_score_negative():
+    prefs = {"target_energy": 0, "target_valence": -3.0, "target_danceability": 0}
+
+    score, _ = score_song(prefs, PERFECT_SONG)
+
+    assert score >= 0.0
+
+
+def test_edge_profile_zero_targets_still_count_as_preferences():
+    # 0.0 and False are falsy, so a lazy `if target:` check would skip them.
+    prefs = {"target_energy": 0.0, "target_valence": 0.0, "target_danceability": 0.0, "likes_acoustic": False}
+    silent = make_song(energy=0.0, valence=0.0, danceability=0.0, acousticness=0.2)
+
+    score, reasons = score_song(prefs, silent)
+
+    assert score == pytest.approx(2.0 + 1.0 + 0.5 + 1.0)
+    assert len(reasons) == 4
+
+
+def test_edge_profile_loud_cased_genre_and_mood_still_match():
+    prefs = {"favorite_genre": "LoFi", "favorite_mood": " Chill "}
+
+    score, _ = score_song(prefs, PERFECT_SONG)
+
+    assert score == pytest.approx(3.0)
+
+
+def test_edge_profile_acoustic_metalhead_cannot_game_genre_with_acousticness():
+    # Likes acoustic sound but only metal: genre (2.0) should beat acousticness (1.0).
+    prefs = {"favorite_genre": "metal", "likes_acoustic": True, "target_energy": 1.0}
+    loud_metal = make_song(genre="metal", energy=1.0, acousticness=0.1)
+    mellow_lofi = make_song(genre="lofi", energy=0.3, acousticness=0.9)
+
+    assert score_song(prefs, loud_metal)[0] > score_song(prefs, mellow_lofi)[0]
