@@ -1,33 +1,18 @@
-from typing import List, Dict, Tuple, Optional
-from dataclasses import dataclass
+from typing import List, Optional
+from dataclasses import asdict
 
-@dataclass
-class Song:
-    """
-    Represents a song and its attributes.
-    Required by tests/test_recommender.py
-    """
-    id: int
-    title: str
-    artist: str
-    genre: str
-    mood: str
-    energy: float
-    tempo_bpm: float
-    valence: float
-    danceability: float
-    acousticness: float
-
-@dataclass
-class UserProfile:
-    """
-    Represents a user's taste preferences.
-    Required by tests/test_recommender.py
-    """
-    favorite_genre: str
-    favorite_mood: str
-    target_energy: float
-    likes_acoustic: bool
+try:
+    from .song import Song, SONG_FIELDS, OPTIONAL_SONG_FIELDS
+    from .user_profile import UserProfile, USER_PREF_KEYS
+    from .song_loader import parse_bool, load_songs
+    from .scoring import score_song
+    from .ranking import MAX_REROLLS, recommend_songs
+except ImportError:  # run as a script (python src/main.py), where src/ is the top level
+    from song import Song, SONG_FIELDS, OPTIONAL_SONG_FIELDS
+    from user_profile import UserProfile, USER_PREF_KEYS
+    from song_loader import parse_bool, load_songs
+    from scoring import score_song
+    from ranking import MAX_REROLLS, recommend_songs
 
 class Recommender:
     """
@@ -37,37 +22,14 @@ class Recommender:
     def __init__(self, songs: List[Song]):
         self.songs = songs
 
-    def recommend(self, user: UserProfile, k: int = 5) -> List[Song]:
-        # TODO: Implement recommendation logic
-        return self.songs[:k]
+    def recommend(self, user: UserProfile, k: int = 5, seed: Optional[int] = None) -> List[Song]:
+        """Returns the top k songs for a user profile, best first."""
+        # Shares recommend_songs() so the class and function versions never disagree.
+        results = recommend_songs(asdict(user), [asdict(song) for song in self.songs], k=k, seed=seed)
+        songs_by_id = {song.id: song for song in self.songs}
+        return [songs_by_id[song["id"]] for song, _, _ in results]
 
     def explain_recommendation(self, user: UserProfile, song: Song) -> str:
-        # TODO: Implement explanation logic
-        return "Explanation placeholder"
-
-def load_songs(csv_path: str) -> List[Dict]:
-    """
-    Loads songs from a CSV file.
-    Required by src/main.py
-    """
-    # TODO: Implement CSV loading logic
-    print(f"Loading songs from {csv_path}...")
-    return []
-
-def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
-    """
-    Scores a single song against user preferences.
-    Required by recommend_songs() and src/main.py
-    """
-    # TODO: Implement scoring logic using your Algorithm Recipe from Phase 2.
-    # Expected return format: (score, reasons)
-    return []
-
-def recommend_songs(user_prefs: Dict, songs: List[Dict], k: int = 5) -> List[Tuple[Dict, float, str]]:
-    """
-    Functional implementation of the recommendation logic.
-    Required by src/main.py
-    """
-    # TODO: Implement scoring and ranking logic
-    # Expected return format: (song_dict, score, explanation)
-    return []
+        """Returns a semicolon-separated explanation of how a song scored for a user."""
+        _, reasons = score_song(asdict(user), asdict(song))
+        return "; ".join(reasons)
