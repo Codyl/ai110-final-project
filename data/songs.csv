@@ -1,21 +1,31 @@
 id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness
-1,Sunrise City,Neon Echo,pop,happy,0.82,118,0.84,0.79,0.18
-2,Midnight Coding,LoRoom,lofi,chill,0.42,78,0.56,0.62,0.71
-3,Storm Runner,Voltline,rock,intense,0.91,152,0.48,0.66,0.10
-4,Library Rain,Paper Lanterns,lofi,chill,0.35,72,0.60,0.58,0.86
-5,Gym Hero,Max Pulse,pop,intense,0.93,132,0.77,0.88,0.05
-6,Spacewalk Thoughts,Orbit Bloom,ambient,chill,0.28,60,0.65,0.41,0.92
-7,Coffee Shop Stories,Slow Stereo,jazz,relaxed,0.37,90,0.71,0.54,0.89
-8,Night Drive Loop,Neon Echo,synthwave,moody,0.75,110,0.49,0.73,0.22
-9,Focus Flow,LoRoom,lofi,focused,0.40,80,0.59,0.60,0.78
-10,Rooftop Lights,Indigo Parade,indie pop,happy,0.76,124,0.81,0.82,0.35
-11,Dust Road Home,Hollow Pines,country,nostalgic,0.48,96,0.68,0.57,0.74
-12,Concrete Kings,Block Theory,hip hop,confident,0.78,92,0.62,0.85,0.12
-13,Velvet Hour,Marisol Vega,r&b,romantic,0.52,84,0.73,0.70,0.34
-14,Iron Requiem,Black Cathedral,metal,angry,0.97,168,0.22,0.43,0.03
-15,Fiesta Eléctrica,Los Cometas,reggaeton,energetic,0.86,96,0.89,0.92,0.09
-16,Moonlit Sonata,Elara Voss,classical,melancholic,0.18,66,0.25,0.22,0.97
-17,Sunday Porch,Willow & Wren,folk,peaceful,0.30,82,0.70,0.45,0.93
-18,Pulse Cathedral,Kinetic Drift,EDM,euphoric,0.95,128,0.86,0.90,0.04
-19,Kingston Sunrise,Jah Meridian,reggae,uplifting,0.58,78,0.83,0.80,0.42
-20,Blue Smoke Lounge,Otis Marlowe,blues,sad,0.40,70,0.31,0.50,0.81
+1,Hedwig's Theme,John Williams,Orchestral,"Magical, mysterious",0.35,77,0.3,0.2,0.9
+2,Duel of the Fates,John Williams,Orchestral,"Epic, ominous",0.9,86,0.2,0.2,0.75
+3,Imperial March,John Williams,Orchestral,"Dark, powerful",0.75,104,0.15,0.3,0.85
+4,Nothing Else Matters,Metallica,Heavy metal / Rock,"Emotional, reflective",0.45,69,0.2,0.35,0.65
+5,Enter Sandman,Metallica,Heavy metal,"Aggressive, energetic",0.9,123,0.6,0.55,0.02
+6,Master of Puppets,Metallica,Thrash metal,"Intense, aggressive",0.98,105,0.3,0.4,0.0
+7,Moonlight Sonata,Beethoven,Classical,"Melancholic, contemplative",0.25,60,0.1,0.1,0.98
+8,Symphony No. 5,Beethoven,Classical,"Dramatic, intense",0.85,108,0.2,0.15,0.95
+9,Ode to Joy,Beethoven,Classical,"Triumphant, joyful",0.7,120,0.85,0.4,0.95
+10,Counting Stars,OneRepublic,Pop rock,"Uplifting, hopeful",0.8,122,0.48,0.66,0.06
+11,Apologize,OneRepublic,Pop,"Sad, emotional",0.5,118,0.25,0.5,0.2
+12,I Lived,OneRepublic,Pop rock,"Inspirational, joyful",0.85,120,0.75,0.6,0.05
+13,You Raise Me Up,Celtic Woman,Celtic / Classical crossover,"Inspirational, emotional",0.45,75,0.55,0.15,0.75
+14,Tír na nÓg,Celtic Woman,Celtic,"Dreamy, mystical",0.4,90,0.45,0.25,0.7
+15,Amazing Grace,Celtic Woman,Traditional / Choral,"Peaceful, reverent",0.25,70,0.1,0.1,0.9
+16,Come Thou Fount of Every Blessing,Tabernacle Choir,Sacred choral,"Reverent, peaceful",0.35,85,0.45,0.1,0.9
+17,Hallelujah Chorus,Tabernacle Choir,Classical choral,"Triumphant, celebratory",0.8,115,0.8,0.2,0.9
+18,Battle Hymn of the Republic,Tabernacle Choir,Sacred orchestral / Choral,"Patriotic, triumphant",0.85,110,0.8,0.2,0.85
+19,Dynamite,BTS,K-pop / Disco pop,"Happy, playful",0.85,114,0.95,0.75,0.01
+20,Spring Day,BTS,K-pop,"Nostalgic, melancholic",0.4,108,0.25,0.5,0.3
+21,Mic Drop,BTS,K-pop / Hip-hop,"Confident, aggressive",0.85,170,0.55,0.8,0.0
+22,Viva La Vida,Coldplay,Alternative rock,"Hopeful, nostalgic",0.75,138,0.45,0.45,0.2
+23,Fix You,Coldplay,Alternative rock,"Sad, comforting",0.35,70,0.2,0.2,0.55
+24,Believer,Imagine Dragons,Alternative rock,"Intense, determined",0.9,125,0.65,0.75,0.0
+25,A Thousand Years,Christina Perri,Pop / Acoustic,"Romantic, sentimental",0.3,74,0.25,0.3,0.8
+26,Wake Me Up,Avicii,EDM / Folk pop,"Uplifting, adventurous",0.85,124,0.65,0.7,0.15
+27,"Take Me Home, Country Roads",John Denver,Country / Folk,"Nostalgic, cheerful",0.55,82,0.85,0.5,0.85
+28,The Sound of Silence,Simon & Garfunkel,Folk rock,"Somber, introspective",0.2,108,0.1,0.25,0.85
+29,The Four Seasons: Spring,Vivaldi,Baroque classical,"Lively, joyful",0.8,110,0.9,0.3,0.98
+30,Experience,Ludovico Einaudi,Contemporary classical,"Emotional, cinematic",0.55,65,0.2,0.15,0.9
