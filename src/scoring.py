@@ -27,7 +27,7 @@ def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
 
     def closeness(value, target):
         """Returns 1.0 for an exact match, falling toward 0.0 as the gap grows."""
-        return 1 - abs(value - target)
+        return max(0.0, 1 - abs(value - target))
 
     def normalize_bpm(bpm):
         """Maps a tempo onto 0.0-1.0, clamping 60 bpm and below to 0 and 180 bpm and above to 1."""
