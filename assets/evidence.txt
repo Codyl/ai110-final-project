@@ -1,0 +1,118 @@
+# Evidence log. Reproduce with: python scripts/run_evidence.py && python -m pytest -q
+# Vibe-search sections use a stub client (no AWS call); everything else is the real code on data/songs.csv.
+
+$ python scripts/run_evidence.py
+Loading songs from data/songs.csv...
+Catalog: 31 songs. Settings: seed=0, jitter=0 (no random bonus), k=5
+
+=== A. Pop / happy (starter, lowercase labels)
+prefs: {'favorite_genre': 'pop', 'favorite_mood': 'happy', 'target_energy': 0.8, 'likes_acoustic': False, 'target_valence': 0.8, 'target_danceability': 0.8, 'target_bpm': 120.0}
+1. Wake Me Up - Avicii [EDM / Folk pop] score 4.63
+   because: energy 0.85 vs target 0.80 (+1.90 of 2.00); genre EDM / Folk pop is not pop (+0.00); mood Uplifting, adventurous is not happy (+0.00); acousticness 0.15 vs target 0.20 (+0.95 of 1.00); valence 0.65 vs target 0.80 (+0.85 of 1.00); danceability 0.70 vs target 0.80 (+0.45 of 0.50); tempo 124 bpm vs target 120 bpm (+0.48 of 0.50)
+2. I Lived - OneRepublic [Pop rock] score 4.60
+3. Dynamite - BTS [K-pop / Disco pop] score 4.51
+4. Believer - Imagine Dragons [Alternative rock] score 4.40
+5. CASTLE OF GLASS - Linkin Park [Alternative] score 4.32
+
+=== B. Pop / sad (exact catalog labels)
+prefs: {'favorite_genre': 'Pop', 'favorite_mood': 'Sad, emotional', 'target_energy': 0.5}
+1. Apologize - OneRepublic [Pop] score 5.00
+   because: energy 0.50 vs target 0.50 (+2.00 of 2.00); genre matches Pop (+2.00); mood matches Sad, emotional (+1.00)
+2. Experience - Ludovico Einaudi [Contemporary classical] score 1.90
+3. Nothing Else Matters - Metallica [Heavy metal / Rock] score 1.90
+4. Take Me Home, Country Roads - John Denver [Country / Folk] score 1.90
+5. You Raise Me Up - Celtic Woman [Celtic / Classical crossover] score 1.90
+
+=== C. Calm classical
+prefs: {'favorite_genre': 'Classical', 'favorite_mood': 'Melancholic, contemplative', 'target_energy': 0.2, 'likes_acoustic': True}
+1. Moonlight Sonata - Beethoven [Classical] score 5.72
+   because: energy 0.25 vs target 0.20 (+1.90 of 2.00); genre matches Classical (+2.00); mood matches Melancholic, contemplative (+1.00); acousticness 0.98 vs target 0.80 (+0.82 of 1.00)
+2. The Sound of Silence - Simon & Garfunkel [Folk rock] score 2.95
+3. A Thousand Years - Christina Perri [Pop / Acoustic] score 2.80
+4. Amazing Grace - Celtic Woman [Traditional / Choral] score 2.80
+5. Come Thou Fount of Every Blessing - Tabernacle Choir [Sacred choral] score 2.60
+
+=== D. Loud metal
+prefs: {'favorite_genre': 'Heavy metal', 'favorite_mood': 'Aggressive, energetic', 'target_energy': 0.95}
+1. Enter Sandman - Metallica [Heavy metal] score 4.90
+   because: energy 0.90 vs target 0.95 (+1.90 of 2.00); genre matches Heavy metal (+2.00); mood matches Aggressive, energetic (+1.00)
+2. Believer - Imagine Dragons [Alternative rock] score 1.90
+3. Duel of the Fates - John Williams [Orchestral] score 1.90
+4. Battle Hymn of the Republic - Tabernacle Choir [Sacred orchestral / Choral] score 1.80
+5. Dynamite - BTS [K-pop / Disco pop] score 1.80
+
+=== E. Energy only
+prefs: {'target_energy': 0.9}
+1. Believer - Imagine Dragons [Alternative rock] score 2.00
+   because: energy 0.90 vs target 0.90 (+2.00 of 2.00)
+2. Duel of the Fates - John Williams [Orchestral] score 2.00
+3. Enter Sandman - Metallica [Heavy metal] score 2.00
+4. Battle Hymn of the Republic - Tabernacle Choir [Sacred orchestral / Choral] score 1.90
+5. Dynamite - BTS [K-pop / Disco pop] score 1.90
+
+=== F. Contradiction (classical + sad but loud, not acoustic)
+prefs: {'favorite_genre': 'Classical', 'favorite_mood': 'Sad, emotional', 'target_energy': 0.95, 'likes_acoustic': False}
+1. Symphony No. 5 - Beethoven [Classical] score 4.05
+   because: energy 0.85 vs target 0.95 (+1.80 of 2.00); genre matches Classical (+2.00); mood Dramatic, intense is not Sad, emotional (+0.00); acousticness 0.95 vs target 0.20 (+0.25 of 1.00)
+2. Apologize - OneRepublic [Pop] score 3.10
+3. Wake Me Up - Avicii [EDM / Folk pop] score 2.75
+4. Master of Puppets - Metallica [Thrash metal] score 2.74
+5. Believer - Imagine Dragons [Alternative rock] score 2.70
+
+=== G. No preferences
+prefs: {}
+1. A Thousand Years - Christina Perri [Pop / Acoustic] score 0.00
+   because: 
+2. Amazing Grace - Celtic Woman [Traditional / Choral] score 0.00
+3. Apologize - OneRepublic [Pop] score 0.00
+4. Battle Hymn of the Republic - Tabernacle Choir [Sacred orchestral / Choral] score 0.00
+5. Believer - Imagine Dragons [Alternative rock] score 0.00
+
+=== Guardrail 1: bad input is rejected, not silently scored
+None prefs: ValueError: user_prefs and song must not be None
+non-dict prefs: TypeError: user_prefs and song must be dictionaries
+song missing 'energy': ValueError: song is missing values for: energy
+
+=== Guardrail 2: scores stay inside 0..8 even for impossible targets
+min 0.39, max 1.16
+
+=== Guardrail 3: one artist cannot fill the list (k=10, max_per_artist=1)
+10 songs, most songs by one artist: 1
+
+=== Guardrail 4: same seed gives the same list; previous_ids forces a different list
+repeatable with seed: True
+differs from previous list: True
+
+=== Known weakness: exact-text matching
+favorite_genre='Classical' vs a Classical song -> 2.00
+favorite_genre='classical' vs a Classical song -> 0.00
+favorite_genre=' Classical ' vs a Classical song -> 0.00
+
+=== Vibe search (STUB client, not real Bedrock): retrieve -> model preferences -> validate -> rank
+summary: Quiet, sad, acoustic.
+preferences kept: {'target_energy': 0.2, 'target_valence': 0.3, 'likes_acoustic': True}
+(favorite_genre 'Rock' was not an exact genre in the retrieved songs, so the guardrail dropped it)
+1. A Thousand Years - Christina Perri score 3.75
+2. Amazing Grace - Celtic Woman score 3.60
+3. The Sound of Silence - Simon & Garfunkel score 3.75
+4. Moonlight Sonata - Beethoven score 3.52
+5. Hedwig's Theme - John Williams score 3.60
+
+=== Vibe guardrail: unusable model reply -> fallback to closest matches
+used_fallback=True
+note: Showing the closest matches by similarity because the AI step failed: model reply contained no JSON object
+- Amazing Grace (closest match to your description (similarity 0.89))
+- Moonlight Sonata (closest match to your description (similarity 0.89))
+- A Thousand Years (closest match to your description (similarity 0.88))
+
+=== Vibe guardrail: bad requests are rejected before any model call
+''...: Describe the vibe you want first, for example: calm music for studying.
+'   '...: Describe the vibe you want first, for example: calm music for studying.
+'xxxxxxxxxx'...: Keep the description under 300 characters (it is 301).
+
+$ python -m pytest -q
+E         comparison failed
+FAILED tests/test_recommender.py::test_recommend_returns_songs_sorted_by_score
+FAILED tests/test_recommender.py::test_explain_recommendation_returns_non_empty_string
+FAILED tests/test_score_song.py::test_edge_profile_loud_cased_genre_and_mood_still_match
+3 failed, 125 passed in 0.37s
