@@ -32,6 +32,19 @@ def show_player(song):
         st.caption("No video saved for this song.")
         # st.markdown(f"[Search on YouTube]({search_url(song['title'], song['artist'])})")
 
+@st.dialog("All songs", width="large")
+def show_all_songs():
+    """Modal with a table of every song we ."""
+    columns = ["title", "artist", "genre", "mood", "energy", "valence", "danceability", "tempo_bpm", "acousticness"]
+    st.caption(f"{len(songs)} songs")
+    # A Markdown table avoids st.dataframe, which needs pandas.
+    lines = ["| " + " | ".join(columns) + " |", "|" + " --- |" * len(columns)]
+    for song in songs:
+        cells = [str(song[name]).replace("|", "\\|") for name in columns]
+        lines.append("| " + " | ".join(cells) + " |")
+    st.markdown("\n".join(lines))
+
+
 # Build dropdown options from the data itself (your genres/moods are free-form)
 genres = sorted({s["genre"] for s in songs})
 moods = sorted({s["mood"] for s in songs})
@@ -39,6 +52,8 @@ moods = sorted({s["mood"] for s in songs})
 with st.sidebar:
     # Enter the song title or artist name to filter the songs
     search_query = st.text_input("Search", value="", placeholder="Type a song title or artist name")
+    if st.button("All Songs"):
+        show_all_songs()
     st.header("Your preferences")
     favorite_genre = st.selectbox("Favorite genre", genres)
     favorite_mood = st.selectbox("Favorite mood", moods)
