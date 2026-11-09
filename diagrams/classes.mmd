@@ -1,0 +1,118 @@
+classDiagram
+    class Song {
+        <<dataclass>>
+        +int id
+        +str title
+        +str artist
+        +str genre
+        +str mood
+        +float energy
+        +float tempo_bpm
+        +float valence
+        +float danceability
+        +float acousticness
+        +bool is_liked
+        +bool is_disliked
+        +str youtube_id
+    }
+
+    class UserProfile {
+        <<dataclass>>
+        +str favorite_genre
+        +str favorite_mood
+        +float target_energy
+        +bool likes_acoustic
+        +float target_valence
+        +float target_danceability
+        +float target_bpm
+    }
+
+    class Recommender {
+        +list songs
+        +recommend(user, k, seed) list
+        +explain_recommendation(user, song) str
+    }
+
+    class song_loader {
+        <<module>>
+        +load_songs(csv_path) list
+        +parse_bool(text) bool
+    }
+
+    class scoring {
+        <<module>>
+        +score_song(user_prefs, song) tuple
+    }
+
+    class ranking {
+        <<module>>
+        +recommend_songs(user_prefs, songs, k) list
+    }
+
+    class player {
+        <<module>>
+        +embed_html(video_id) str
+        +watch_url(video_id) str
+        +search_url(title, artist) str
+        +is_valid_video_id(video_id) bool
+    }
+
+    class BedrockClient {
+        +embed(text) list
+        +complete(system, user) str
+    }
+
+    class VibeIndex {
+        +list songs
+        +BedrockClient client
+        +search(query_vector, n) list
+    }
+
+    class VibeResult {
+        <<dataclass>>
+        +str request
+        +str summary
+        +dict preferences
+        +list recommendations
+        +list candidates
+        +bool used_fallback
+        +str note
+    }
+
+    class vibe_search {
+        <<module>>
+        +song_document(song) str
+        +validate_request(text) str
+        +parse_preferences(raw, genres) tuple
+        +build_vibe_playlist(request, index, client, k) VibeResult
+    }
+
+    class VibeSearchError {
+        <<exception>>
+    }
+
+    class app {
+        <<streamlit>>
+        +get_songs(csv_modified_time)
+        +get_vibe_index(csv_modified_time)
+        +show_player(song)
+    }
+
+    UserProfile ..> ranking : same keys as user_prefs dict
+    Recommender --> UserProfile : takes
+    Recommender --> Song : holds
+    Recommender ..> ranking : delegates to
+    ranking ..> scoring : scores each song
+    song_loader ..> Song : columns come from Song fields
+    scoring ..> Song : required fields
+    VibeIndex --> BedrockClient : embeds with
+    VibeIndex ..> Song : indexes song dicts
+    vibe_search ..> VibeIndex : retrieves from
+    vibe_search ..> BedrockClient : calls
+    vibe_search ..> ranking : ranks candidates
+    vibe_search ..> VibeResult : returns
+    BedrockClient ..> VibeSearchError : raises
+    app ..> song_loader : loads CSV
+    app ..> ranking : sidebar recommendations
+    app ..> vibe_search : vibe requests
+    app ..> player : plays videos

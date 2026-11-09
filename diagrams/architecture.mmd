@@ -1,0 +1,51 @@
+flowchart TB
+    USER(["User in the Streamlit app (src/app.py)"])
+
+    USER -->|"sidebar sliders"| RANK
+    USER -->|"free-text vibe request"| BUILD
+    RANK -->|"top k songs plus why"| USER
+    RESULT -->|"playlist, summary, fallback note"| USER
+    PLAYER -->|"YouTube player per song"| USER
+
+    subgraph DATA["Data"]
+        CSV[("data/songs.csv<br/>features and youtube_id")]
+        CACHE[("data/embeddings_cache.json")]
+    end
+
+    subgraph CORE["Core recommender"]
+        LOADER["song_loader.load_songs"]
+        SONGS["song dicts (fields from Song)"]
+        RANK["ranking.recommend_songs"]
+        SCORE["scoring.score_song"]
+        PLAYER["player.py<br/>embedded YouTube player"]
+    end
+
+    subgraph VIBE["Vibe search (src/vibe_search.py)"]
+        BUILD["build_vibe_playlist<br/>orchestrates the steps"]
+        INDEX["VibeIndex<br/>cosine similarity search"]
+        GUARD["parse_preferences<br/>guardrails"]
+        RESULT["VibeResult"]
+    end
+
+    subgraph AWS["AWS Bedrock"]
+        EMB["Titan Text Embeddings V2"]
+        LLM["Claude via Converse API"]
+    end
+
+    CSV --> LOADER --> SONGS
+    SONGS --> RANK
+    RANK --> SCORE
+    SONGS --> PLAYER
+
+    SONGS -->|"song_document text"| INDEX
+    INDEX <-->|"embed song text"| EMB
+    INDEX <-.->|"reuse saved vectors"| CACHE
+
+    BUILD -->|"1. embed the request"| EMB
+    BUILD -->|"2. find 10 closest songs"| INDEX
+    BUILD -->|"3. request plus candidates"| LLM
+    LLM -->|"JSON preferences"| GUARD
+    GUARD -->|"4. clamped, allowlisted preferences"| BUILD
+    BUILD -->|"5. rank only the candidates"| RANK
+    BUILD -.->|"fallback: invalid JSON or Bedrock error, use closest matches"| RESULT
+    BUILD --> RESULT

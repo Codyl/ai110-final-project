@@ -1,10 +1,13 @@
 import csv
+import re
 from typing import List, Dict
 
 try:
-    from .song import SONG_FIELDS, OPTIONAL_SONG_FIELDS
+    from .song import SONG_FIELDS, OPTIONAL_SONG_FIELDS, OPTIONAL_TEXT_FIELDS
 except ImportError:  # run as a script (python src/main.py), where src/ is the top level
-    from song import SONG_FIELDS, OPTIONAL_SONG_FIELDS
+    from song import SONG_FIELDS, OPTIONAL_SONG_FIELDS, OPTIONAL_TEXT_FIELDS
+
+YOUTUBE_ID_PATTERN = re.compile(r"[A-Za-z0-9_-]{11}")
 
 def parse_bool(text: str) -> bool:
     """Reads a yes/no cell from the CSV. Blank means False."""
@@ -39,5 +42,9 @@ def load_songs(csv_path: str) -> List[Dict]:
                     song[name] = parse_bool(row.get(name) or "")
                 except ValueError as error:
                     raise ValueError(f"{csv_path} line {line_number}: {name}: {error}") from None
+            for name in OPTIONAL_TEXT_FIELDS:
+                song[name] = (row.get(name) or "").strip()
+            if song.get("youtube_id") and not YOUTUBE_ID_PATTERN.fullmatch(song["youtube_id"]):
+                raise ValueError(f"{csv_path} line {line_number}: youtube_id: invalid video id {song['youtube_id']!r}")
             songs.append(song)
     return songs

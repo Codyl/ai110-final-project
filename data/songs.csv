@@ -1,31 +1,32 @@
-id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness
-1,Hedwig's Theme,John Williams,Orchestral,"Magical, mysterious",0.35,77,0.3,0.2,0.9
-2,Duel of the Fates,John Williams,Orchestral,"Epic, ominous",0.9,86,0.2,0.2,0.75
-3,Imperial March,John Williams,Orchestral,"Dark, powerful",0.75,104,0.15,0.3,0.85
-4,Nothing Else Matters,Metallica,Heavy metal / Rock,"Emotional, reflective",0.45,69,0.2,0.35,0.65
-5,Enter Sandman,Metallica,Heavy metal,"Aggressive, energetic",0.9,123,0.6,0.55,0.02
-6,Master of Puppets,Metallica,Thrash metal,"Intense, aggressive",0.98,105,0.3,0.4,0.0
-7,Moonlight Sonata,Beethoven,Classical,"Melancholic, contemplative",0.25,60,0.1,0.1,0.98
-8,Symphony No. 5,Beethoven,Classical,"Dramatic, intense",0.85,108,0.2,0.15,0.95
-9,Ode to Joy,Beethoven,Classical,"Triumphant, joyful",0.7,120,0.85,0.4,0.95
-10,Counting Stars,OneRepublic,Pop rock,"Uplifting, hopeful",0.8,122,0.48,0.66,0.06
-11,Apologize,OneRepublic,Pop,"Sad, emotional",0.5,118,0.25,0.5,0.2
-12,I Lived,OneRepublic,Pop rock,"Inspirational, joyful",0.85,120,0.75,0.6,0.05
-13,You Raise Me Up,Celtic Woman,Celtic / Classical crossover,"Inspirational, emotional",0.45,75,0.55,0.15,0.75
-14,Tír na nÓg,Celtic Woman,Celtic,"Dreamy, mystical",0.4,90,0.45,0.25,0.7
-15,Amazing Grace,Celtic Woman,Traditional / Choral,"Peaceful, reverent",0.25,70,0.1,0.1,0.9
-16,Come Thou Fount of Every Blessing,Tabernacle Choir,Sacred choral,"Reverent, peaceful",0.35,85,0.45,0.1,0.9
-17,Hallelujah Chorus,Tabernacle Choir,Classical choral,"Triumphant, celebratory",0.8,115,0.8,0.2,0.9
-18,Battle Hymn of the Republic,Tabernacle Choir,Sacred orchestral / Choral,"Patriotic, triumphant",0.85,110,0.8,0.2,0.85
-19,Dynamite,BTS,K-pop / Disco pop,"Happy, playful",0.85,114,0.95,0.75,0.01
-20,Spring Day,BTS,K-pop,"Nostalgic, melancholic",0.4,108,0.25,0.5,0.3
-21,Mic Drop,BTS,K-pop / Hip-hop,"Confident, aggressive",0.85,170,0.55,0.8,0.0
-22,Viva La Vida,Coldplay,Alternative rock,"Hopeful, nostalgic",0.75,138,0.45,0.45,0.2
-23,Fix You,Coldplay,Alternative rock,"Sad, comforting",0.35,70,0.2,0.2,0.55
-24,Believer,Imagine Dragons,Alternative rock,"Intense, determined",0.9,125,0.65,0.75,0.0
-25,A Thousand Years,Christina Perri,Pop / Acoustic,"Romantic, sentimental",0.3,74,0.25,0.3,0.8
-26,Wake Me Up,Avicii,EDM / Folk pop,"Uplifting, adventurous",0.85,124,0.65,0.7,0.15
-27,"Take Me Home, Country Roads",John Denver,Country / Folk,"Nostalgic, cheerful",0.55,82,0.85,0.5,0.85
-28,The Sound of Silence,Simon & Garfunkel,Folk rock,"Somber, introspective",0.2,108,0.1,0.25,0.85
-29,The Four Seasons: Spring,Vivaldi,Baroque classical,"Lively, joyful",0.8,110,0.9,0.3,0.98
-30,Experience,Ludovico Einaudi,Contemporary classical,"Emotional, cinematic",0.55,65,0.2,0.15,0.9
+id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness,youtube_id
+1,Hedwig's Theme,John Williams,Orchestral,"Magical, mysterious",0.35,77,0.3,0.2,0.9,wtHra9tFISY
+2,Duel of the Fates,John Williams,Orchestral,"Epic, ominous",0.9,86,0.2,0.2,0.75,D_2bluVPsb0
+3,Imperial March,John Williams,Orchestral,"Dark, powerful",0.75,104,0.15,0.3,0.85,SEfS9XSdAzs
+4,Nothing Else Matters,Metallica,Heavy metal / Rock,"Emotional, reflective",0.45,69,0.2,0.35,0.65,tAGnKpE4NCI
+5,Enter Sandman,Metallica,Heavy metal,"Aggressive, energetic",0.9,123,0.6,0.55,0.02,CD-E-LDc384
+6,Master of Puppets,Metallica,Thrash metal,"Intense, aggressive",0.98,105,0.3,0.4,0.0,E0ozmU9cJDg
+7,Moonlight Sonata,Beethoven,Classical,"Melancholic, contemplative",0.25,60,0.1,0.1,0.98,4Tr0otuiQuU
+8,Symphony No. 5,Beethoven,Classical,"Dramatic, intense",0.85,108,0.2,0.15,0.95,SSypujlLlNI
+9,Ode to Joy,Beethoven,Classical,"Triumphant, joyful",0.7,120,0.85,0.4,0.95,fb-TIZq3TVE
+10,Counting Stars,OneRepublic,Pop rock,"Uplifting, hopeful",0.8,122,0.48,0.66,0.06,HDtf4AMCttQ
+11,Apologize,OneRepublic,Pop,"Sad, emotional",0.5,118,0.25,0.5,0.2,-rKUT6zugJ0
+12,I Lived,OneRepublic,Pop rock,"Inspirational, joyful",0.85,120,0.75,0.6,0.05,z0rxydSolwU
+13,You Raise Me Up,Celtic Woman,Celtic / Classical crossover,"Inspirational, emotional",0.45,75,0.55,0.15,0.75,Yfwlj0gba_k
+14,Tír na nÓg,Celtic Woman,Celtic,"Dreamy, mystical",0.4,90,0.45,0.25,0.7,dhW1mh7U6-U
+15,Amazing Grace,Celtic Woman,Traditional / Choral,"Peaceful, reverent",0.25,70,0.1,0.1,0.9,HsCp5LG_zNE
+16,Come Thou Fount of Every Blessing,Tabernacle Choir,Sacred choral,"Reverent, peaceful",0.35,85,0.45,0.1,0.9,rfu-MgXTDcM
+17,Hallelujah Chorus,Tabernacle Choir,Classical choral,"Triumphant, celebratory",0.8,115,0.8,0.2,0.9,BBZ7AfZR9xs
+18,Battle Hymn of the Republic,Tabernacle Choir,Sacred orchestral / Choral,"Patriotic, triumphant",0.85,110,0.8,0.2,0.85,G9anfFdAr3E
+19,Dynamite,BTS,K-pop / Disco pop,"Happy, playful",0.85,114,0.95,0.75,0.01,gdZLi9oWNZg
+20,Spring Day,BTS,K-pop,"Nostalgic, melancholic",0.4,108,0.25,0.5,0.3,xEeFrLSkMm8
+21,Mic Drop,BTS,K-pop / Hip-hop,"Confident, aggressive",0.85,170,0.55,0.8,0.0,WilfUhlT2AM
+22,Viva La Vida,Coldplay,Alternative rock,"Hopeful, nostalgic",0.75,138,0.45,0.45,0.2,dvgZkm1xWPE
+23,Fix You,Coldplay,Alternative rock,"Sad, comforting",0.35,70,0.2,0.2,0.55,hAx-2vNb2aU
+24,Believer,Imagine Dragons,Alternative rock,"Intense, determined",0.9,125,0.65,0.75,0.0,7wtfhZwyrcc
+25,A Thousand Years,Christina Perri,Pop / Acoustic,"Romantic, sentimental",0.3,74,0.25,0.3,0.8,rtOvBOTyX00
+26,Wake Me Up,Avicii,EDM / Folk pop,"Uplifting, adventurous",0.85,124,0.65,0.7,0.15,J1pidmOxAMA
+27,"Take Me Home, Country Roads",John Denver,Country / Folk,"Nostalgic, cheerful",0.55,82,0.85,0.5,0.85,1vrEljMfXYo
+28,The Sound of Silence,Simon & Garfunkel,Folk rock,"Somber, introspective",0.2,108,0.1,0.25,0.85,4fWyzwo1xg0
+29,The Four Seasons: Spring,Vivaldi,Baroque classical,"Lively, joyful",0.8,110,0.9,0.3,0.98,3LiztfE1X7E
+30,Experience,Ludovico Einaudi,Contemporary classical,"Emotional, cinematic",0.55,65,0.2,0.15,0.9,Tu96yevGMEA
+31,CASTLE OF GLASS,Linkin Park,Alternative,Energetic,0.68,108.03,0.51,0.68,0.16,
