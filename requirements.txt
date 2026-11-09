@@ -1,5 +1,6 @@
 pandas
 pytest
 streamlit
+boto3
 requests
 python-dotenv

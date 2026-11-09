@@ -5,6 +5,7 @@ import streamlit.components.v1 as components
 from recommender import load_songs, recommend_songs
 from song_api import SongApiError, add_song_to_csv, fetch_song, search_tracks
 from player import embed_html, is_valid_video_id, search_url, watch_url, PLAYER_HEIGHT
+from vibe_search import BedrockClient, VibeIndex, VibeSearchError, build_vibe_playlist
 
 st.set_page_config(page_title="Music Recommender", page_icon="🎵")
 st.title("🎵 Music Recommender")
@@ -20,6 +21,13 @@ def get_songs(csv_modified_time: float):
 
 
 songs = get_songs(os.path.getmtime(SONGS_CSV))
+
+
+@st.cache_resource
+def get_vibe_index(csv_modified_time: float):
+    """Builds the embedding index once per CSV version; raises VibeSearchError if Bedrock is unavailable."""
+    client = BedrockClient()
+    return VibeIndex(get_songs(csv_modified_time), client, cache_path="data/embeddings_cache.json")
 
 
 def show_player(song):
@@ -73,6 +81,43 @@ user_prefs = {
     "target_danceability": target_danceability,
     "target_bpm": float(target_bpm),
 }
+st.subheader("✨ Describe a vibe")
+with st.form("vibe_form"):
+    vibe_text = st.text_input("What do you want to listen to?", placeholder="calm music for studying, no screaming")
+    vibe_submitted = st.form_submit_button("Build playlist")
+
+if vibe_submitted:
+    st.session_state.pop("vibe_message", None)
+    try:
+        with st.spinner("Searching your catalog with AWS Bedrock..."):
+            vibe_index = get_vibe_index(os.path.getmtime(SONGS_CSV))
+            st.session_state["vibe_result"] = build_vibe_playlist(vibe_text, vibe_index, vibe_index.client, k=k)
+    except ValueError as error:
+        st.session_state.pop("vibe_result", None)
+        st.session_state["vibe_message"] = ("warning", str(error))
+    except VibeSearchError as error:
+        st.session_state.pop("vibe_result", None)
+        st.session_state["vibe_message"] = ("error", f"Vibe search is unavailable: {error}")
+
+if "vibe_message" in st.session_state:
+    level, text = st.session_state["vibe_message"]
+    getattr(st, level)(text)
+
+vibe_result = st.session_state.get("vibe_result")
+if vibe_result:
+    if vibe_result.used_fallback:
+        st.warning(vibe_result.note)
+    elif vibe_result.summary:
+        st.info(vibe_result.summary)
+    st.caption(f"Playlist for: {vibe_result.request}")
+    for song, score, explanation in vibe_result.recommendations:
+        with st.container(border=True):
+            st.markdown(f"**{song['title']}** by {song['artist']}")
+            st.caption(f"Genre: {song['genre']} | Mood: {song['mood']}")
+            show_player(song)
+            with st.expander("Why this song?", expanded=False):
+                st.caption(f"Score: {score:.2f}. {explanation}")
+
 if search_query not in ["", None]:
     st.subheader("Search results")
     found_songs = False

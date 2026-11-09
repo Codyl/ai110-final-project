@@ -12,11 +12,13 @@ def write_csv(tmp_path, rows):
     return str(path)
 
 
-def test_bundled_csv_has_a_valid_video_for_every_song():
+def test_bundled_csv_video_ids_are_valid_and_unique():
     songs = load_songs("data/songs.csv")
-    assert len(songs) == 30
-    assert all(is_valid_video_id(s["youtube_id"]) for s in songs)
-    assert len({s["youtube_id"] for s in songs}) == len(songs)
+    assert len(songs) >= 30
+    ids = [s["youtube_id"] for s in songs if s["youtube_id"]]  # songs added later may have no video yet
+    assert all(is_valid_video_id(video_id) for video_id in ids)
+    assert len(set(ids)) == len(ids)
+    assert all(s["youtube_id"] for s in songs if s["id"] <= 30)
 
 
 def test_loader_reads_youtube_id(tmp_path):
